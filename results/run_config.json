@@ -1,0 +1,44 @@
+{
+  "date_local": "2026-03-19",
+  "dataset_input": "/Users/vayu/Downloads/malicious_phish.csv.zip",
+  "label_mapping": {
+    "benign": 0,
+    "defacement": 1,
+    "phishing": 1,
+    "malware": 1
+  },
+  "subset_max_rows": 50000,
+  "splits": {
+    "train": 30000,
+    "val": 10000,
+    "test": 10000
+  },
+  "electra": {
+    "base_model": "google/electra-small-discriminator",
+    "epochs": 1,
+    "max_train_samples": 20000,
+    "max_length": 128
+  },
+  "metadata_model": {
+    "type": "RandomForestClassifier",
+    "n_estimators": 400,
+    "class_weight": "balanced"
+  },
+  "mc_dropout": {
+    "passes": 10,
+    "ci_z": 1.96,
+    "std_threshold": 0.15,
+    "uncertain_rule": "uncertain if (ci_low<=0.5<=ci_high) OR (p_std>=0.15)"
+  },
+  "fusion": {
+    "type": "LogisticRegression",
+    "features": [
+      "p_electra_mean",
+      "p_electra_std",
+      "p_meta"
+    ],
+    "train_sample_cap": 8000,
+    "val_sample_cap": 3000
+  },
+  "threshold": 0.5
+}

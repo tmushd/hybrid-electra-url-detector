@@ -1,0 +1,22 @@
+```mermaid
+flowchart LR
+  A["URL string"] --> B["Branch A: ELECTRA (URL text)"]
+  A --> C["Branch B: RF (CTI-inspired features)"]
+
+  B --> D["MC Dropout (T passes)"]
+  D --> E["p_electra_mean"]
+  D --> F["p_electra_std"]
+  D --> G["95% CI (low/high)"]
+
+  C --> H["p_meta"]
+
+  E --> I["Fusion: Logistic Regression"]
+  F --> I
+  H --> I
+  I --> J["p_fusion (malicious prob)"]
+
+  G --> K{"Uncertain?"}
+  F --> K
+  K -->|Yes| L["Flag for review / abstain"]
+  K -->|No| M["Auto decision @ threshold"]
+```

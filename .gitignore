@@ -1,0 +1,36 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+
+data/raw/*
+data/processed/*
+models/*
+results/*
+
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!models/.gitkeep
+!results/.gitkeep
+
+# Optional: commit the frozen 50k split for easy reproduction (contains potentially malicious URLs; do not click).
+!data/processed/README.md
+!data/processed/train.csv
+!data/processed/val.csv
+!data/processed/test.csv
+
+# Allow checked-in results for the midterm writeup/demo.
+!results/README.md
+!results/metrics.json
+!results/predictions_test.csv
+!results/examples.md
+!results/examples.csv
+!results/run_config.json
+
+# Allow checked-in documentation.
+!data/DATASET.md
+!slides/outline.md
+!slides/architecture.mmd

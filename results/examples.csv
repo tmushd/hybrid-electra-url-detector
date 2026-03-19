@@ -1,0 +1,6 @@
+example_type,url_defanged,label,p_meta,p_electra_mean,p_electra_std,ci_low,ci_high,uncertain,p_fusion
+Correct malicious (ELECTRA),hxxp://www[.]alliedmanagedcare[.]com/about-amc/our-locations/hawaii[.]html,1,0.9525,0.97748184,0.0029279657,0.9756670700877588,0.9792966139942726,0,0.999308782067617
+Correct benign (ELECTRA),timesdispatch[.]com/news/local-news/2011/apr/26/tdmain01-bruce-jamerson-clerk-of-house-of-delegate-ar-995322/,0,0.0075,0.02160867,0.0026948447,0.0199383872400651,0.0232789513815511,0,0.0019594826040312
+False positive (ELECTRA),www[.]vodafone[.]co[.]uk[.]tilequest[.]com/,0,0.5775,0.9719852,0.0038027577,0.9696282472613236,0.9743421945569136,0,0.9330666394395468
+False negative (ELECTRA),naifanet[.]com/main-pub[.]cfm?usr=560000,1,0.0425,0.024632147,0.003938047,0.0221913196301892,0.0270729735338255,0,0.0030336690105279
+Uncertain example,encyclopedia[.]farlex[.]com/1902,0,0.1225,0.5030261,0.41324612,0.246893525935111,0.7591587296953821,1,0.0208753159029542

@@ -1,0 +1,7 @@
+url,label
+https://example.com,0
+https://www.wikipedia.org,0
+http://secure-paypal-login.example.com/update,1
+http://verify-account.example.net/login,1
+https://bankofamerica.com,0
+http://192.168.0.1/secure/update,1
