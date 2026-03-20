@@ -78,6 +78,11 @@ You can preprocess it directly from the zip like this:
 python src/preprocess.py --input /path/to/malicious_phish.csv.zip --kaggle-malicious-phish
 ```
 
+If you already have the zip in this repo at `data/raw/malicious_phish.csv.zip`, use:
+```bash
+python src/preprocess.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish
+```
+
 Optional downsample for faster training:
 ```bash
 python src/preprocess.py --input /path/to/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 50000

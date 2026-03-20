@@ -12,6 +12,8 @@ models/*
 results/*
 
 !data/raw/.gitkeep
+!data/raw/README.md
+!data/raw/malicious_phish.csv.zip
 !data/processed/.gitkeep
 !models/.gitkeep
 !results/.gitkeep

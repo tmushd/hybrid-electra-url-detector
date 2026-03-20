@@ -60,6 +60,11 @@ If you want to run preprocessing from the original dataset:
 python src/preprocess.py --input /path/to/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 50000
 ```
 
+If the dataset is already present in this repo at `data/raw/malicious_phish.csv.zip`, you can run:
+```bash
+python src/preprocess.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 50000
+```
+
 ## Safety note
 
 The datasets contain real URLs that may be malicious. Do not click them.
