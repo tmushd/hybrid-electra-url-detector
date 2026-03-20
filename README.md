@@ -21,9 +21,24 @@ I implemented a hybrid malicious URL detection prototype consisting of:
 - **Monte Carlo dropout** on ELECTRA to estimate uncertainty (mean/std/95% CI),
 - a **logistic-regression fusion layer** using ELECTRA mean score, ELECTRA uncertainty, and metadata score.
 
-## 1) Setup
+## 1) Run it (A–Z)
 
-### macOS / Linux
+### A) Prerequisites
+
+- Python **3.10+** (3.11/3.12 works)
+- Internet access (first run downloads the pretrained ELECTRA model)
+- Disk: a few GB recommended (Hugging Face cache + checkpoints)
+
+### B) Clone the repo
+
+```bash
+git clone https://github.com/tmushd/hybrid-electra-url-detector.git
+cd hybrid-electra-url-detector
+```
+
+### C) Create a virtual environment + install deps
+
+macOS / Linux:
 
 Create a venv and install dependencies:
 ```bash
@@ -57,7 +72,14 @@ pip install -r requirements.txt
 - Train/test split and training seeds are fixed (`1337`), but exact metrics can still vary slightly across hardware
   (CPU vs GPU vs Apple MPS).
 
-## 2) Data format
+### D) Data location
+
+This repo includes the dataset zip at:
+- `data/raw/malicious_phish.csv.zip`
+
+You can also point to your own downloaded copy anywhere on disk.
+
+## 2) Data format (custom datasets)
 
 Put a CSV at `data/raw/urls.csv` with at least:
 - `url` (string)
@@ -92,7 +114,63 @@ python src/preprocess.py --input /path/to/malicious_phish.csv.zip --kaggle-malic
 
 ## 3) Run (suggested order)
 
-Preprocess / split:
+### Option 1: Quick demo (small run, a few minutes)
+
+This is the “works on most laptops” mode (fewer rows + fewer MC passes).
+
+```bash
+python src/preprocess.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 5000
+python src/train_metadata_model.py
+python src/train_electra.py --model google/electra-small-discriminator --epochs 1 --max-train-samples 2000
+python src/fusion.py --mc-passes 3 --max-train-samples 2000 --max-val-samples 1000 --batch-size 64 --progress
+python src/evaluate.py --mc-passes 3 --batch-size 64 --progress
+python src/pick_examples.py
+```
+
+### Option 2: Frozen midterm run (the numbers in `results/metrics.json`)
+
+```bash
+python src/preprocess.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 50000
+python src/train_metadata_model.py
+python src/train_electra.py --model google/electra-small-discriminator --epochs 1 --max-train-samples 20000
+python src/fusion.py --mc-passes 10 --max-train-samples 8000 --max-val-samples 3000 --batch-size 64 --progress
+python src/evaluate.py --mc-passes 10 --batch-size 64 --progress
+python src/pick_examples.py
+```
+
+### Option 3: Full dataset (slow)
+
+Preprocess the full dataset (no downsampling):
+```bash
+python src/preprocess.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 0
+```
+
+Then choose one of:
+
+- **Recommended “full data, capped training”** (still slow but realistic on laptops):
+```bash
+python src/train_metadata_model.py
+python src/train_electra.py --model google/electra-small-discriminator --epochs 1 --max-train-samples 100000
+python src/fusion.py --mc-passes 5 --max-train-samples 10000 --max-val-samples 5000 --batch-size 64 --progress
+python src/evaluate.py --mc-passes 5 --batch-size 64 --progress
+```
+
+- **True full training** (can take many hours without a CUDA GPU):
+```bash
+python src/train_metadata_model.py
+python src/train_electra.py --model google/electra-small-discriminator --epochs 1 --max-train-samples 0
+python src/fusion.py --mc-passes 5 --max-train-samples 20000 --max-val-samples 10000 --batch-size 64 --progress
+python src/evaluate.py --mc-passes 5 --batch-size 64 --progress
+```
+
+### Outputs
+
+After `evaluate.py` completes:
+- `results/metrics.json`
+- `results/predictions_test.csv`
+- `results/examples.md` (after `pick_examples.py`)
+
+## 4) What “CTI” means here (honest scope)
 ```bash
 python src/preprocess.py --input data/raw/urls.csv
 ```
@@ -120,17 +198,6 @@ Evaluate on test split:
 python src/evaluate.py --mc-passes 30
 ```
 
-### Reproduce the frozen run (the numbers in `results/metrics.json`)
-
-```bash
-python src/preprocess.py --input /path/to/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 50000
-python src/train_metadata_model.py
-python src/train_electra.py --model google/electra-small-discriminator --epochs 1 --max-train-samples 20000
-python src/fusion.py --mc-passes 10 --max-train-samples 8000 --max-val-samples 3000
-python src/evaluate.py --mc-passes 10
-python src/pick_examples.py
-```
-
 ### One-command reproduction (optional)
 
 This runs the pipeline end-to-end:
@@ -138,13 +205,7 @@ This runs the pipeline end-to-end:
 python src/reproduce.py --input /path/to/malicious_phish.csv.zip --kaggle-malicious-phish
 ```
 
-## 4) What “CTI” means here (honest scope)
-
-This midterm implements a **lightweight CTI-inspired feature branch** using structured URL/domain signals
-(lexical counts, URL patterns, keyword flags, entropy-ish randomness). Live Google CTI and Whois pipelines are
-left as future work.
-
-## 5) Outputs
+## 5) Outputs (files and folders)
 
 - Processed splits: `data/processed/{train,val,test}.csv`
 - Trained models: `models/metadata.joblib`, `models/fusion.joblib`, `models/electra/`
@@ -173,10 +234,11 @@ Interpretation (midterm-appropriate):
 - Uncertainty adds a practical safety layer by flagging ambiguous cases.
 - Fusion is a working first prototype but does not yet outperform ELECTRA.
 
-## 7) Notes
+## 7) Notes / safety
 
 - ELECTRA training can be slow on CPU; for a quick demo, reduce epochs via `--epochs 1` and/or sample data via `--max-train-samples`.
 - MC-dropout uncertainty: mark a prediction as **uncertain** if the 95% CI crosses `0.5` or if `std` exceeds a threshold.
+ - The dataset contains real URLs that may be malicious. Do not click them.
 
 ## Repo structure
 
