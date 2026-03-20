@@ -1,4 +1,6 @@
 # Hybrid Malicious URL Detector (Midterm Prototype)
+Dataset is provided in this repository but if needed:
+Dataset: https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset
 
 Prototype of an **uncertainty-aware hybrid malicious URL detector** inspired by:
 - ELECTRA-style transformer backbone for raw URL text
