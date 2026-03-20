@@ -219,7 +219,6 @@ See:
 - `results/examples.md` (defanged qualitative examples)
 - `results/run_config.json` (frozen run settings)
 - `data/DATASET.md` (dataset + label mapping)
-- `slides/outline.md` (ready-to-copy slide content)
 
 Headline metrics on the test split:
 - Metadata (RF): ROC-AUC **0.9764**, Accuracy **0.9308**

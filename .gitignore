@@ -34,5 +34,4 @@ results/*
 
 # Allow checked-in documentation.
 !data/DATASET.md
-!slides/outline.md
 !slides/architecture.mmd
