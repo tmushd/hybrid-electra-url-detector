@@ -1,3 +1,5 @@
+Project by: Vayunandareddy Pannala & Mayank Futnani Arapula
+
 # Hybrid Malicious URL Detector (Midterm Prototype)
 Dataset is provided in this repository but if needed:
 Dataset: https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset
