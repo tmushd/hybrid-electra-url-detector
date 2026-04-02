@@ -1,4 +1,4 @@
-Project by: Vayunandareddy Pannala & Mayank Futnani Arapula
+Project by: Vayunandareddy Pannala 
 
 # Hybrid Malicious URL Detector (Midterm Prototype)
 Dataset is provided in this repository but if needed:
