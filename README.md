@@ -1,4 +1,4 @@
-Project by: Vayunandareddy Pannala 
+
 
 # Hybrid Malicious URL Detector 
 Dataset is provided in this repository but if needed:
