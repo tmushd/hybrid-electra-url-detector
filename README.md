@@ -1,8 +1,19 @@
-
-
 # Hybrid Malicious URL Detector 
 Dataset is provided in this repository but if needed:
 Dataset: https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset
+
+## At A Glance
+
+| Area | What this project does |
+| --- | --- |
+| Problem | Detects malicious URLs with a hybrid text + metadata approach |
+| Dataset | Kaggle malicious URLs dataset included in the repo |
+| Text branch | ELECTRA fine-tuned on raw URL strings |
+| Structured branch | Random Forest on CTI-inspired URL and domain features |
+| Uncertainty | Monte Carlo dropout on ELECTRA with mean, std, and confidence intervals |
+| Fusion | Logistic regression combining text score, uncertainty, and metadata score |
+| Output | End-to-end training, evaluation, fusion, and example selection scripts |
+| Scope | Deliberately sized as a demoable one-week prototype |
 
 Prototype of an **uncertainty-aware hybrid malicious URL detector** inspired by:
 - ELECTRA-style transformer backbone for raw URL text
