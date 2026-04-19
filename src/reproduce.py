@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from pathlib import Path
 
 import numpy as np
@@ -133,12 +134,38 @@ def main() -> int:
         "electra_mc_dropout": compute_binary_metrics(y, mc.p_mean).as_dict(),
         "fusion": compute_binary_metrics(y, p_fusion).as_dict(),
     }
+    # Ensure strict JSON (no NaN) for both file output and terminal copy/paste.
+    metrics_out_safe: dict = {}
+    for model_name, md in metrics_out.items():
+        md_safe: dict = {}
+        for k, v in md.items():
+            if isinstance(v, float) and math.isnan(v):
+                md_safe[k] = None
+            else:
+                md_safe[k] = v
+        metrics_out_safe[model_name] = md_safe
+
     out_path = paths.results / "metrics_reproduce.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(metrics_out, indent=2))
+    out_path.write_text(json.dumps(metrics_out_safe, indent=2, allow_nan=False))
     print(f"Wrote: {out_path}")
+
+    print("\n=== Metrics Summary ===")
+    for name in ("metadata", "electra_mc_dropout", "fusion"):
+        m = metrics_out_safe.get(name, {})
+        print(
+            f"{name}: roc_auc={m.get('roc_auc')} accuracy={m.get('accuracy')} f1={m.get('f1')} "
+            f"precision={m.get('precision')} recall={m.get('recall')}"
+        )
+
+    print("\n=== Artifacts ===")
+    print(str(out_path))
+    print(str(paths.results))
+    print(str(paths.models))
+    print(str(paths.data_processed))
+
     if args.print_json:
-        print(json.dumps(metrics_out, indent=2))
+        print("\n" + json.dumps(metrics_out_safe, indent=2, allow_nan=False))
 
     return 0
 

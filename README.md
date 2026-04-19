@@ -103,7 +103,7 @@ python src/reproduce.py --input data/raw/malicious_phish.csv.zip --kaggle-malici
 ```
 
 Terminal output:
-- The script prints a JSON summary at the end (metrics for metadata, ELECTRA MC-dropout, and fusion).
+- The script prints a metrics summary + artifact paths, then a JSON blob at the end.
 - To disable JSON printing (e.g., for scripting), add `--no-print-json`.
 
 ### 4) Reproduce our run (exact command + code version)
