@@ -4,22 +4,45 @@
 
 This repository is an end-to-end hybrid malicious URL detector that combines a transformer text model with structured URL/domain features, then adds uncertainty estimation and a lightweight fusion model.
 
+### At A Glance
+
+| Area | What this project does |
+| --- | --- |
+| Problem | Detects malicious URLs with a hybrid text + metadata approach |
+| Dataset | Kaggle malicious URLs dataset included in the repo |
+| Text branch | ELECTRA fine-tuned on raw URL strings |
+| Structured branch | Random Forest on CTI-inspired URL and domain features |
+| Uncertainty | Monte Carlo dropout on ELECTRA with mean, std, and confidence intervals |
+| Fusion | Logistic regression combining text score, uncertainty, and metadata score |
+| Output | End-to-end training, evaluation, fusion, and example selection scripts |
+| Scope | Deliberately sized as a demoable, reproducible prototype |
+
 Dataset included in this repo:
 - `data/raw/malicious_phish.csv.zip` (Kaggle "malicious_phish"; mapped to binary labels)
 
 Main entrypoint:
 - `src/reproduce.py` (one-command end-to-end pipeline; writes metrics to `results/`)
 
-What this repo does (at a glance):
-- Text branch: ELECTRA fine-tuned on raw URL strings
-- Structured branch: Random Forest on URL/domain features
-- Uncertainty: Monte Carlo dropout on ELECTRA (mean/std over repeated inference)
-- Fusion: logistic regression on `[p_electra_mean, p_electra_std, p_meta]`
-
 Engineering highlights:
 - Single command pipeline (`src/reproduce.py`) that: preprocesses, splits, trains, fuses, and evaluates
 - Repeatable configuration captured in `results/run_config.json` (dataset path, label mapping, split sizes, and training caps)
 - Concrete artifacts for review: metrics JSON, predictions CSV, trained model files, and example outputs under `results/`
+
+### Why This Is Useful (Professional Framing)
+
+This repo demonstrates applied ML patterns that translate well to production work:
+- Multi-signal modeling: combines text understanding (transformer) with structured signals (engineered features)
+- Operational uncertainty: adds a practical “flag ambiguous cases” layer via MC-dropout statistics
+- Reproducibility-first: a single script produces models + metrics + artifacts from a fresh checkout
+
+### Key Artifacts
+
+After running, check `results/` for:
+- `metrics_reproduce.json`: metrics from the one-command pipeline run
+- `metrics.json`: metrics from the frozen/project run already included in the repo
+- `predictions_test.csv`: per-example scores and predictions (from the frozen/project run)
+- `examples.md` / `examples.csv`: qualitative examples for quick review
+- `run_config.json`: the exact settings used for the frozen/project run
 
 ## Run
 
