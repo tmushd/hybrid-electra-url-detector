@@ -23,6 +23,25 @@ Engineering highlights:
 
 ## Run
 
+### 0) Install prerequisites (macOS / Windows)
+
+You need:
+- Git
+- Python 3.10+ (with `pip` and `venv`)
+
+macOS:
+- Install Git (via Xcode Command Line Tools): `xcode-select --install`
+- Install Python 3.10+: download and install from https://www.python.org/downloads/
+
+Windows:
+- Install Git for Windows: https://git-scm.com/download/win
+- Install Python 3.10+: download and install from https://www.python.org/downloads/ (check "Add python.exe to PATH")
+
+Verify installs:
+- `git --version`
+- macOS: `python3 --version`
+- Windows: `py --version`
+
 ### 1) Clone
 
 ```bash
