@@ -44,6 +44,13 @@ def main() -> int:
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--fusion-train-cap", type=int, default=8000)
     parser.add_argument("--fusion-val-cap", type=int, default=3000)
+    parser.add_argument(
+        "--no-print-json",
+        action="store_false",
+        dest="print_json",
+        help="Disable printing a JSON summary to stdout at the end of the run.",
+    )
+    parser.set_defaults(print_json=True)
 
     args = parser.parse_args()
 
@@ -130,10 +137,11 @@ def main() -> int:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(metrics_out, indent=2))
     print(f"Wrote: {out_path}")
+    if args.print_json:
+        print(json.dumps(metrics_out, indent=2))
 
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

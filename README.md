@@ -102,6 +102,10 @@ Notes:
 python src/reproduce.py --input data/raw/malicious_phish.csv.zip --kaggle-malicious-phish --max-rows 5000 --electra-epochs 1 --electra-max-train-samples 2000 --mc-passes 3 --fusion-train-cap 2000 --fusion-val-cap 1000
 ```
 
+Terminal output:
+- The script prints a JSON summary at the end (metrics for metadata, ELECTRA MC-dropout, and fusion).
+- To disable JSON printing (e.g., for scripting), add `--no-print-json`.
+
 ### 4) Reproduce our run (exact command + code version)
 
 Code version (commit): `37f648f66fd731b56bfe41e0f9e56c30dd51292c`
