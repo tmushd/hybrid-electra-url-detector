@@ -32,7 +32,7 @@ Engineering highlights:
 
 This repo demonstrates applied ML patterns that translate well to production work:
 - Multi-signal modeling: combines text understanding (transformer) with structured signals (engineered features)
-- Operational uncertainty: adds a practical “flag ambiguous cases” layer via MC-dropout statistics
+- Operational uncertainty: adds a practical "flag ambiguous cases" layer via MC-dropout statistics
 - Reproducibility-first: a single script produces models + metrics + artifacts from a fresh checkout
 
 ### Key Artifacts
