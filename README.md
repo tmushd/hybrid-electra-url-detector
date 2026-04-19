@@ -95,6 +95,7 @@ Notes:
 - First run requires internet (downloads the pretrained ELECTRA weights from Hugging Face).
 - If `torch` fails to install from `requirements.txt`, install PyTorch first (per your CPU/GPU) and then re-run `pip install -r requirements.txt`.
 - The pipeline uses a fixed seed (`1337`), but exact metrics can still vary slightly across hardware (CPU vs GPU vs Apple MPS).
+- This pipeline can take a while (ELECTRA fine-tuning + MC-dropout). If you only need to show existing results in the terminal, run `python src/print_results.py`.
 
 ### 3) Quick run (downsized, single command)
 
