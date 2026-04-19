@@ -2,17 +2,24 @@
 
 ## Repo
 
-Uncertainty-aware hybrid malicious URL detection prototype:
-- Text branch: ELECTRA fine-tuned on raw URL strings
-- Structured branch: Random Forest on URL/domain features
-- Uncertainty: Monte Carlo dropout on ELECTRA (mean/std over repeated inference)
-- Fusion: Logistic regression on `[p_electra_mean, p_electra_std, p_meta]`
+This repository is an end-to-end hybrid malicious URL detector that combines a transformer text model with structured URL/domain features, then adds uncertainty estimation and a lightweight fusion model.
 
 Dataset included in this repo:
-- `data/raw/malicious_phish.csv.zip` (Kaggle “malicious_phish”; mapped to binary labels)
+- `data/raw/malicious_phish.csv.zip` (Kaggle "malicious_phish"; mapped to binary labels)
 
 Main entrypoint:
 - `src/reproduce.py` (one-command end-to-end pipeline; writes metrics to `results/`)
+
+What this repo does (at a glance):
+- Text branch: ELECTRA fine-tuned on raw URL strings
+- Structured branch: Random Forest on URL/domain features
+- Uncertainty: Monte Carlo dropout on ELECTRA (mean/std over repeated inference)
+- Fusion: logistic regression on `[p_electra_mean, p_electra_std, p_meta]`
+
+Engineering highlights:
+- Single command pipeline (`src/reproduce.py`) that: preprocesses, splits, trains, fuses, and evaluates
+- Repeatable configuration captured in `results/run_config.json` (dataset path, label mapping, split sizes, and training caps)
+- Concrete artifacts for review: metrics JSON, predictions CSV, trained model files, and example outputs under `results/`
 
 ## Run
 
